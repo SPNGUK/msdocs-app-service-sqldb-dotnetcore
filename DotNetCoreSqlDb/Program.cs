@@ -5,8 +5,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add database context and cache
 builder.Services.AddDbContext<MyDatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnection")));
-builder.Services.AddDistributedMemoryCache();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnection ")));
+    //upd by spng options.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
+//spng builder.Services.AddDistributedMemoryCache();
+
+//added by spng
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+options.Configuration = builder.Configuration["AZURE_REDIS_CONNECTIONSTRING"];
+options.InstanceName = "SampleInstance";
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
